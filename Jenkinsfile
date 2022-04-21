@@ -13,7 +13,7 @@ pipeline {
         jenkins="gcr.io/marks-app"
     }
     parameters {
-        string(name: 'STATEMENT', defaultValue: 'hello; ls /', description: 'What should I say?')
+        string(name: 'STATEMENT', defaultValue: 'ls /', description: 'What should I say?')
     }
     stages {
         stage('Initialize'){
@@ -32,8 +32,6 @@ pipeline {
                 sh 'printenv'
                 echo "${GCP_ACCESS_TOKEN}"
                 sh('echo ${STATEMENT}')
-
-                func("parameter passed")
             }
         }
         stage('Build') {
@@ -67,14 +65,3 @@ pipeline {
     }
 }
 
-def func(String a){
-    echo a
-}
-def imageBuild(imageName, imageTag) {
-    // sh('docker build -t $imageName:$imageTag .')
-    docker.build jenkins + ":$BUILD_NUMBER" 
-    // sh('docker pull jenkins/jenkins:latest')
-    echo "Build complete..."
-    docker.images
-    // sh('docker images')
-}
