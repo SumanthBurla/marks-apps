@@ -47,7 +47,7 @@ pipeline {
         }
         stage('Flask-runApp'){
             steps{
-                sh('docker run -p 8083:5000 $IMAGE_NAME:$IMAGE_TAG')
+                sh('docker run -d -p 8083:5000 $IMAGE_NAME:$IMAGE_TAG')
                 echo "app running on http://localhost:8083"
             }
         }
