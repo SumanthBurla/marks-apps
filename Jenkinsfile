@@ -36,6 +36,7 @@ pipeline {
         }
         stage('Build') {
             steps{
+                script{
                 // sh('docker build -t $imageName:$imageTag .')
                 docker.build jenkins + ":$BUILD_NUMBER" 
                 // sh('docker pull jenkins/jenkins:latest')
@@ -43,7 +44,7 @@ pipeline {
                 docker.images
                 // sh('docker images')
             }
-        }
+        }}
         stage('Hello-world-stage') {
             steps{
                 sh 'echo $ABC' 
