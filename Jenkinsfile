@@ -41,8 +41,7 @@ pipeline {
                 // docker.build jenkins + ":$BUILD_NUMBER" 
                 // sh('docker pull jenkins/jenkins:latest')
                 echo "Build complete..."
-                docker.images
-                // sh('docker images')
+                sh('docker images')
             }
         }}
         stage('Hello-world-stage') {
