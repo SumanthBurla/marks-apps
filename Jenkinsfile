@@ -2,7 +2,7 @@
 
 pipeline {
     agent {
-        node { label 'tempLabel' }
+        node { label 'jenkins2' }
     }
     
     environment {
