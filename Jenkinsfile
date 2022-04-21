@@ -36,7 +36,12 @@ pipeline {
         }
         stage('Build') {
             steps{
-                imageBuild("${env.$IMAGE_NAME}", "${env.$IMAGE_TAG}")
+                // sh('docker build -t $imageName:$imageTag .')
+                docker.build jenkins + ":$BUILD_NUMBER" 
+                // sh('docker pull jenkins/jenkins:latest')
+                echo "Build complete..."
+                docker.images
+                // sh('docker images')
             }
         }
         stage('Hello-world-stage') {
