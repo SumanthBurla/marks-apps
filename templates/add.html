@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST" action="/result">
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="Name" name="std_name">
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="maths" name="maths">
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="physics" name="physics">
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="coding" name="coding">
+    </div>
+    <input type="submit">
+</form>
+{% endblock %}

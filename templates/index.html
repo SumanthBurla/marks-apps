@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2><strong>{% block title %} Half-yearly Exam Marks {% endblock %}</strong></h2>
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Maths</th>
+            <th>physics</th>
+            <th>Coding</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+    {% for mark in marks %}
+        <tr>
+            <td>{{ mark['std_name'] }}</td>
+            <td>{{ mark['maths'] }}</td>
+            <td>{{ mark['physics'] }}</td>
+            <td>{{ mark['coding'] }}</td>
+            <td>{{ mark['grade'] }}%</td>
+          </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+
+{% endblock %}
+{% block body %}
+<h4><strong>Top 3 Students *_*</strong></h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for t in top %}
+  <tr>
+      <td>{{ t['std_name'] }}</td>
+      <td>{{ t['grade'] }}%</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+<hr>
+{% endblock %}
