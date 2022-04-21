@@ -6,11 +6,9 @@ pipeline {
     }
     
     environment {
-        ABC = 1
         GCP_ACCESS_TOKEN = "credentials('jenkins')"
         IMAGE_NAME="gcr.io/marks-app"
         IMAGE_TAG="v1.0"
-        jenkins="gcr.io/marks-app"
     }
     parameters {
         string(name: 'STATEMENT', defaultValue: 'ls /', description: 'What should I say?')
@@ -38,21 +36,19 @@ pipeline {
             steps{
                 script{
                 sh('docker build -t $IMAGE_NAME:$IMAGE_TAG .')
-                // docker.build jenkins + ":$BUILD_NUMBER" 
-                // sh('docker pull jenkins/jenkins:latest')
                 echo "Build complete..."
                 sh('docker images')
             }
         }}
-        stage('Hello-world-stage') {
-            steps{
-                sh 'echo $ABC' 
-                echo 'Hello world!'
-            }
-        }
         stage('Execution-stage') {            
             steps{
-                sh 'echo "Both files vm.tf and version.tf files have $(expr $(wc -w README.md | awk \'{ print $1 }\') + $(wc -w .gitignore | awk \'{ print $1 }\') ) words..."'
+                sh 'echo "Both files app.py and version.tf files have $(expr $(wc -w app.py | awk \'{ print $1 }\') + $(wc -w .gitignore | awk \'{ print $1 }\') ) words..."'
+            }
+        }
+        stage('Flask-runApp'){
+            steps{
+                sh('docker run -p 8083:5000 $IMAGE_NAME:$IMAGE_TAG')
+                echo "app running on http://localhost:8083"
             }
         }
     }
