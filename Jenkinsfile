@@ -4,6 +4,7 @@ pipeline {
     agent {
         node { label 'tempLabel' }
     }
+    
     environment {
         ABC = 1
         GCP_ACCESS_TOKEN = "credentials('jenkins')"
@@ -15,6 +16,10 @@ pipeline {
         string(name: 'STATEMENT', defaultValue: 'hello; ls /', description: 'What should I say?')
     }
     stages {
+        stage('Initialize'){
+            def dockerHome = tool 'myDocker'
+            env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
         stage('env-variables') {
             environment { 
                 DEBUG_FLAGS = '-g'
