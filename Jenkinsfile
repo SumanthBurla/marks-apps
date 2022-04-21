@@ -65,6 +65,7 @@ pipeline {
             echo 'displays when success --- this is success block from post-build section'
         }
         failure {
+            deleteDir()
             echo 'displays when failure --- this is failure block from post-build section'
         }
     }
