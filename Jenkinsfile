@@ -8,11 +8,10 @@ pipeline {
     environment {
         GCP_ACCESS_TOKEN = "credentials('jenkins')"
         IMAGE_NAME="gcr.io/marks-app"
-        IMAGE_TAG="v1.0"
     }
-    parameters {
-        string(name: 'STATEMENT', defaultValue: 'ls /', description: 'What should I say?')
-    }
+    // parameters {
+    //     string(name: 'STATEMENT', defaultValue: 'ls /', description: 'What should I say?')
+    // }
     stages {
         stage('Initialize'){
             steps{
@@ -27,7 +26,7 @@ pipeline {
             }
             steps {
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-                sh 'printenv'
+                // sh 'printenv'
                 echo "${GCP_ACCESS_TOKEN}"
                 sh('echo ${STATEMENT}')
             }
@@ -35,7 +34,7 @@ pipeline {
         stage('Build') {
             steps{
                 script{
-                sh('docker build -t $IMAGE_NAME:$IMAGE_TAG .')
+                sh('docker build -t $IMAGE_NAME:v$BUILD_ID.0 .')
                 echo "Build complete..."
                 sh('docker images')
             }
@@ -47,7 +46,7 @@ pipeline {
         }
         stage('Flask-runApp'){
             steps{
-                sh('docker run -d -p 8083:5000 $IMAGE_NAME:$IMAGE_TAG')
+                sh('docker run -d -p 8083:5000 $IMAGE_NAME:v$BUILD_ID.0')
                 echo "app running on http://localhost:8083"
             }
         }
