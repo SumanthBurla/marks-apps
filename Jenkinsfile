@@ -37,8 +37,8 @@ pipeline {
         stage('Build') {
             steps{
                 script{
-                // sh('docker build -t $imageName:$imageTag .')
-                docker.build jenkins + ":$BUILD_NUMBER" 
+                sh('docker build -t $imageName:$imageTag .')
+                // docker.build jenkins + ":$BUILD_NUMBER" 
                 // sh('docker pull jenkins/jenkins:latest')
                 echo "Build complete..."
                 docker.images
