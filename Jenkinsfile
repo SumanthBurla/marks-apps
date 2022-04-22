@@ -65,7 +65,7 @@ pipeline {
             echo "https://hub.docker.com/repository/docker/${IMAGE_NAME}"
         }
         failure {
-            deleteDir()
+            // deleteDir()
             echo 'displays when failure --- this is failure block from post-build section'
         }
     }
