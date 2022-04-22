@@ -7,6 +7,7 @@ pipeline {
     
     environment {
         IMAGE_NAME="gcr.io/marks-app"
+        DOCKERHUB_CREDENTIALS=credentials('dockerHub-cred')
     }
 
     stages {
@@ -33,6 +34,13 @@ pipeline {
                 runApp()
             }
         }
+        stgae('Dockerhub-login'){
+            steps{
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'res=$(echo $?)'
+                sh 'echo $res'
+            }
+        }
         stage('Push to hub'){
             steps{
                 echo "script TBD for pushing..."
@@ -45,7 +53,8 @@ pipeline {
         }
         success {
             deleteDir()
-            echo 'displays when success --- this is success block from post-build section'
+            echo '----- Job Succeeded -----'
+            echo "app running on http://localhost:8082"
         }
         failure {
             deleteDir()
@@ -60,6 +69,5 @@ def buildImage(){
     sh('docker images')
 }
 def runApp(){
-    sh('docker run -d -p 8083:5000 $IMAGE_NAME:v$BUILD_ID.0')
-    echo "app running on http://localhost:8083"
+    sh('docker run -d -p 8082:5000 $IMAGE_NAME:v$BUILD_ID.0')
 }
