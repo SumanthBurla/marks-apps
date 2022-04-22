@@ -6,7 +6,7 @@ pipeline {
     }
     
     environment {
-        IMAGE_NAME="812535/marks-app"
+        IMAGE_NAME="sburla/marks-app"
         DOCKERHUB_CREDENTIALS=credentials('dockerHub-cred')
     }
 
