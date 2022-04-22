@@ -19,7 +19,7 @@ pipeline {
                     echo "Running ${env.BUILD_ID} job on ${env.JENKINS_URL}"
                 }
             }
-        }
+        } 
         stage('Build') {
             steps{
                 buildImage()
