@@ -64,13 +64,11 @@ pipeline {
             echo 'displays always --- this is always block from post-build section'
         }
         success {
-            deleteDir()
             echo '----- Job Succeeded -----'
             echo "app running on http://localhost:8082"
             echo "https://hub.docker.com/repository/docker/${IMAGE_NAME}"
         }
         failure {
-            deleteDir()
             echo 'displays when failure --- this is failure block from post-build section'
         }
     }
