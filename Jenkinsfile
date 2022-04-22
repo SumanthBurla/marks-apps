@@ -1,33 +1,30 @@
 #!/usr/bin/env groovy
 
 pipeline {
-  agent {
+    agent {
     kubernetes {
-      label 'marks-app'
-      defaultContainer 'jnlp'
-      yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-labels:
-  component: ci
-spec:
-  # Use service account that can deploy to all namespaces
-  serviceAccountName: k8s-jenkins
-  containers:
-  - name: docker
-    image: gcr.io/cloud-builders/docker
-    command:
-    - cat
-    tty: true
-  - name: kubectl
-    image: gcr.io/cloud-builders/kubectl
-    command:
-    - cat
-    tty: true
-"""
-}
-  }
+        yaml '''apiVersion: v1
+    kind: Pod
+    metadata:
+    labels:
+    component: ci
+    spec:
+    # Use service account that can deploy to all namespaces
+    serviceAccountName: k8s-jenkins
+    containers:
+    - name: docker
+        image: gcr.io/cloud-builders/docker
+        command:
+        - cat
+        tty: true
+    - name: kubectl
+        image: gcr.io/cloud-builders/kubectl
+        command:
+        - cat
+        tty: true'''
+    }
+    }
+
     
     environment {
         IMAGE_NAME="sburla/marks-app"
