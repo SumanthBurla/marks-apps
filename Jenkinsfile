@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Build') {
             steps{
-                buildImage($IMAGE_NAME)
+                buildImage('$IMAGE_NAME')
             //     script{
             //     sh('docker build -t $IMAGE_NAME:v$BUILD_ID.0 .')
             //     echo "Build complete..."
@@ -59,12 +59,12 @@ pipeline {
     }
 }
 
-def buildImage(String imageName){
+def buildImage(imageName){
     sh('docker build -t $imageName:v$BUILD_ID.0 .')
     echo "Build complete..."
     sh('docker images')
 }
-def runApp(String imageName){
+def runApp(imageName){
     sh('docker run -d -p 8083:5000 $imageName:v$BUILD_ID.0')
     echo "app running on http://localhost:8083"
 }
