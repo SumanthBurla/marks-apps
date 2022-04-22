@@ -2,29 +2,8 @@
 
 pipeline {
     agent {
-    kubernetes {
-        yaml '''apiVersion: v1
-    kind: Pod
-    metadata:
-    labels:
-    component: ci
-    spec:
-    # Use service account that can deploy to all namespaces
-    serviceAccountName: k8s-jenkins
-    containers:
-    - name: docker
-        image: gcr.io/cloud-builders/docker
-        command:
-        - cat
-        tty: true
-    - name: kubectl
-        image: gcr.io/cloud-builders/kubectl
-        command:
-        - cat
-        tty: true'''
+        node { label 'jenkins2' }
     }
-    }
-
     
     environment {
         IMAGE_NAME="sburla/marks-app"
@@ -36,39 +15,57 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Initialize'){
             steps{
-                container('docker') {
-                    buildImage()
+                script{
+                    def dockerHome = tool 'myDocker'
+                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+                    echo "Running ${env.BUILD_ID} job on ${env.JENKINS_URL}"
                 }
             }
-        }
+        } 
+        stage('Build') {
+            steps{
+                buildImage()
+        }}
+        // stage('Test-Flask-app'){
+        //     steps{
+        //         runApp()
+        //     }
+        // }
         stage('Dockerhub-login'){
             steps{
-                container('docker') {
                 sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
                 // sh 'res=$(echo $?)'
                 // sh 'echo $res'
-            }}
+            }
         }
         stage('Push to hub'){
             steps{
-                container('docker') {
-                pushImage()
-                sh('docker logout')
-            }}
+               pushImage()
+            }
+        }
+        stage('Deploy to GKE') {
+            steps{
+                sh "sed -i 's/hello:latest/${IMAGE_NAME}:v${env.BUILD_ID}.0/g' deployment.yaml"
+                sh('cat deployment.yaml')
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+            }
         }
     }
     post {
         always {
+            sh('docker logout')
             echo 'displays always --- this is always block from post-build section'
         }
         success {
+            // deleteDir()
             echo '----- Job Succeeded -----'
             echo "app running on http://localhost:8082"
             echo "https://hub.docker.com/repository/docker/${IMAGE_NAME}"
         }
         failure {
+            // deleteDir()
             echo 'displays when failure --- this is failure block from post-build section'
         }
     }
