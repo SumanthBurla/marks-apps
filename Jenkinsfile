@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Build') {
             steps{
-                buildImage("${env.IMAGE_NAME}")
+                buildImage($IMAGE_NAME)
             //     script{
             //     sh('docker build -t $IMAGE_NAME:v$BUILD_ID.0 .')
             //     echo "Build complete..."
