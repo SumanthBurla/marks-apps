@@ -37,8 +37,8 @@ pipeline {
         stage('Dockerhub-login'){
             steps{
                 sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
-                sh 'res=$(echo $?)'
-                sh 'echo $res'
+                // sh 'res=$(echo $?)'
+                // sh 'echo $res'
             }
         }
         stage('Push to hub'){
@@ -49,6 +49,7 @@ pipeline {
     }
     post {
         always {
+            sh('docker logout')
             echo 'displays always --- this is always block from post-build section'
         }
         success {
