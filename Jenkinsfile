@@ -1,55 +1,69 @@
 #!/usr/bin/env groovy
 
 pipeline {
-    agent {
-        node { label 'jenkins2' }
-    }
+  agent {
+    kubernetes {
+      label 'marks-app'
+      defaultContainer 'jnlp'
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  component: ci
+spec:
+  # Use service account that can deploy to all namespaces
+  serviceAccountName: k8s-jenkins
+  containers:
+  - name: docker
+    image: gcr.io/cloud-builders/docker
+    command:
+    - cat
+    tty: true
+  - name: kubectl
+    image: gcr.io/cloud-builders/kubectl
+    command:
+    - cat
+    tty: true
+"""
+}
+  }
     
     environment {
         IMAGE_NAME="sburla/marks-app"
         DOCKERHUB_CREDENTIALS=credentials('dockerHub-cred')
+        PROJECT_ID = 'future-silicon-342405'
+        CLUSTER_NAME = 'cluster-0'
+        LOCATION = 'us-central1-c'
+        CREDENTIALS_ID = 'k8s-jenkins'
     }
 
     stages {
-        stage('Initialize'){
-            steps{
-                script{
-                    def dockerHome = tool 'myDocker'
-                    env.PATH = "${dockerHome}/bin:${env.PATH}"
-                    echo "Running ${env.BUILD_ID} job on ${env.JENKINS_URL}"
-                }
-            }
-        } 
         stage('Build') {
             steps{
-                buildImage()
-        }}
-        stage('random-Execution-stage') {            
-            steps{
-                sh 'echo "Both files app.py and version.tf files have $(expr $(wc -w app.py | awk \'{ print $1 }\') + $(wc -w Jenkinsfile | awk \'{ print $1 }\') ) words..."'
-            }
-        }
-        stage('Test-Flask-app'){
-            steps{
-                runApp()
+                container('docker') {
+                    buildImage()
+                }
             }
         }
         stage('Dockerhub-login'){
             steps{
+                container('docker') {
                 sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
                 // sh 'res=$(echo $?)'
                 // sh 'echo $res'
-            }
+            }}
         }
         stage('Push to hub'){
             steps{
-               pushImage()
-            }
+                container('docker') {
+                pushImage()
+                sh('docker logout')
+            }}
         }
     }
     post {
         always {
-            sh('docker logout')
             echo 'displays always --- this is always block from post-build section'
         }
         success {
