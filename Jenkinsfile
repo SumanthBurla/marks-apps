@@ -43,7 +43,7 @@ pipeline {
         }
         stage('Push to hub'){
             steps{
-                echo "script TBD for pushing..."
+               pushImage()
             }
         }
     }
@@ -55,6 +55,7 @@ pipeline {
             deleteDir()
             echo '----- Job Succeeded -----'
             echo "app running on http://localhost:8082"
+            echo "https://hub.docker.com/repository/docker/812535/${IMAGE_NAME}"
         }
         failure {
             deleteDir()
@@ -70,4 +71,9 @@ def buildImage(){
 }
 def runApp(){
     sh('docker run -d -p 8082:5000 $IMAGE_NAME:v$BUILD_ID.0')
+}
+
+def pushImage(){
+    sh('docker push $IMAGE_NAME:v$BUILD_ID.0')
+    echo "----- ${IMAGE_NAME} pushed -----"
 }
