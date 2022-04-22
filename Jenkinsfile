@@ -47,7 +47,7 @@ pipeline {
         }
         stage('Deploy to GKE') {
             steps{
-                sh "sed -i 's/hello:latest/${IMAGE_NAME}:v${env.BUILD_ID}.0/g' deployment.yaml"
+                sh "sed -i 's/hello:latest/sburla\/marks-app:v${env.BUILD_ID}.0/g' deployment.yaml"
                 sh('cat deployment.yaml')
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
             }
