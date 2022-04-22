@@ -20,23 +20,23 @@ pipeline {
                 }
             }
         }
-        stage('Build') {
-            steps{
-                buildImage()
-        }}
-        stage('random-Execution-stage') {            
-            steps{
-                sh 'echo "Both files app.py and version.tf files have $(expr $(wc -w app.py | awk \'{ print $1 }\') + $(wc -w Jenkinsfile | awk \'{ print $1 }\') ) words..."'
-            }
-        }
-        stage('Test-Flask-app'){
-            steps{
-                runApp()
-            }
-        }
+        // stage('Build') {
+        //     steps{
+        //         buildImage()
+        // }}
+        // stage('random-Execution-stage') {            
+        //     steps{
+        //         sh 'echo "Both files app.py and version.tf files have $(expr $(wc -w app.py | awk \'{ print $1 }\') + $(wc -w Jenkinsfile | awk \'{ print $1 }\') ) words..."'
+        //     }
+        // }
+        // stage('Test-Flask-app'){
+        //     steps{
+        //         runApp()
+        //     }
+        // }
         stage('Dockerhub-login'){
             steps{
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
                 sh 'res=$(echo $?)'
                 sh 'echo $res'
             }
