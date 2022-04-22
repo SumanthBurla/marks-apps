@@ -21,14 +21,7 @@ pipeline {
         }
         stage('Build') {
             steps{
-                echo "${env.IMAGE_NAME}"
-                echo IMAGE_NAME
-                buildImage(IMAGE_NAME)
-            //     script{
-            //     sh('docker build -t $IMAGE_NAME:v$BUILD_ID.0 .')
-            //     echo "Build complete..."
-            //     sh('docker images')
-            // }
+                buildImage()
         }}
         stage('random-Execution-stage') {            
             steps{
@@ -37,7 +30,7 @@ pipeline {
         }
         stage('Test-Flask-app'){
             steps{
-                runApp(IMAGE_NAME)
+                runApp()
             }
         }
         stage('Push to hub'){
@@ -61,12 +54,12 @@ pipeline {
     }
 }
 
-def buildImage(imageName){
-    sh('docker build -t $imageName:v$BUILD_ID.0 .')
+def buildImage(){
+    sh('docker build -t $IMAGE_NAME:v$BUILD_ID.0 .')
     echo "Build complete..."
     sh('docker images')
 }
-def runApp(imageName){
-    sh('docker run -d -p 8083:5000 $imageName:v$BUILD_ID.0')
+def runApp(){
+    sh('docker run -d -p 8083:5000 $IMAGE_NAME:v$BUILD_ID.0')
     echo "app running on http://localhost:8083"
 }
