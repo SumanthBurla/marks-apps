@@ -6,7 +6,7 @@ pipeline {
     }
     
     environment {
-        IMAGE_NAME="gcr.io/marks-app"
+        IMAGE_NAME="812535/marks-app"
         DOCKERHUB_CREDENTIALS=credentials('dockerHub-cred')
     }
 
@@ -20,20 +20,20 @@ pipeline {
                 }
             }
         }
-        // stage('Build') {
-        //     steps{
-        //         buildImage()
-        // }}
-        // stage('random-Execution-stage') {            
-        //     steps{
-        //         sh 'echo "Both files app.py and version.tf files have $(expr $(wc -w app.py | awk \'{ print $1 }\') + $(wc -w Jenkinsfile | awk \'{ print $1 }\') ) words..."'
-        //     }
-        // }
-        // stage('Test-Flask-app'){
-        //     steps{
-        //         runApp()
-        //     }
-        // }
+        stage('Build') {
+            steps{
+                buildImage()
+        }}
+        stage('random-Execution-stage') {            
+            steps{
+                sh 'echo "Both files app.py and version.tf files have $(expr $(wc -w app.py | awk \'{ print $1 }\') + $(wc -w Jenkinsfile | awk \'{ print $1 }\') ) words..."'
+            }
+        }
+        stage('Test-Flask-app'){
+            steps{
+                runApp()
+            }
+        }
         stage('Dockerhub-login'){
             steps{
                 sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
@@ -55,7 +55,7 @@ pipeline {
             deleteDir()
             echo '----- Job Succeeded -----'
             echo "app running on http://localhost:8082"
-            echo "https://hub.docker.com/repository/docker/812535/${IMAGE_NAME}"
+            echo "https://hub.docker.com/repository/docker/${IMAGE_NAME}"
         }
         failure {
             deleteDir()
