@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Build') {
             steps{
-                buildImage("${IMAGE_NAME}")
+                buildImage(IMAGE_NAME)
             //     script{
             //     sh('docker build -t $IMAGE_NAME:v$BUILD_ID.0 .')
             //     echo "Build complete..."
@@ -35,7 +35,7 @@ pipeline {
         }
         stage('Test-Flask-app'){
             steps{
-                runApp("${IMAGE_NAME}")
+                runApp(IMAGE_NAME)
             }
         }
         stage('Push to hub'){
