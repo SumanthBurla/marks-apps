@@ -2,12 +2,12 @@
 
 pipeline {
     agent {
-        node { label 'jenkins2' }
+        node { label 'default' }
     }
     
     environment {
         IMAGE_NAME="sburla/marks-app"
-        DOCKERHUB_CREDENTIALS=credentials('dockerHub-cred')
+        DOCKERHUB_CREDENTIALS=credentials('DockerID')
         PROJECT_ID = 'future-silicon-342405'
         CLUSTER_NAME = 'cluster-0'
         LOCATION = 'us-central1-c'
