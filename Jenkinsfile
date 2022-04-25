@@ -49,7 +49,15 @@ pipeline {
             steps{
                 sh "sed -i 's/hello:latest/marks-app:v${env.BUILD_ID}.0/g' deployment.yaml"
                 sh('cat deployment.yaml')
-                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+                // step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+                //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
+                //     caCertificate: '<ca-certificate>',
+                //     serverUrl: '<api-server-address>',
+                //     contextName: '<context-name>',
+                //     clusterName: env.CLUSTER_NAME,
+                //     namespace: 'default'
+                //     ]) {
+                // sh 'kubectl apply -f deployment.yaml'
             }
         }
     } 
