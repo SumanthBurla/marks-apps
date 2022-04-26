@@ -22,7 +22,7 @@ pipeline {
         stage('Pull image from Hub'){
             steps{
                 echo "${params.imageName_fromBuild}"
-                sh('docker pull ${params.imageName_fromBuild}')
+                sh("docker pull ${params.imageName_fromBuild}")
             }
         }
         stage('Test run app'){
