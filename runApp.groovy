@@ -10,15 +10,15 @@ pipeline {
     }
 
     stages {
-        stage('Initialize'){
-            steps{
-                script{
-                    def dockerHome = tool 'myDocker'
-                    env.PATH = "${dockerHome}/bin:${env.PATH}"
-                    echo "Running ${env.BUILD_ID} job on ${env.JENKINS_URL}"
-                }
-            }
-        }
+        // stage('Initialize'){ 
+        //     steps{
+        //         script{
+        //             def dockerHome = tool 'myDocker'
+        //             env.PATH = "${dockerHome}/bin:${env.PATH}"
+        //             echo "Running ${env.BUILD_ID} job on ${env.JENKINS_URL}"
+        //         }
+        //     }
+        // }
         stage('Pull image from Hub'){
             steps{
                 echo "${params.imageName_fromBuild}"
