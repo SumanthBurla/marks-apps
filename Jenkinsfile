@@ -24,17 +24,18 @@ pipeline {
         stage('Build') {
             steps{
                 buildImage()
-        }}
-        stage('Dockerhub-login'){
-            steps{
-                sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
-                // sh 'res=$(echo $?)'
-                // sh 'echo $res'
             }
         }
         stage('Test run app'){
             steps{
                 runApp()
+            }
+        }
+        stage('Dockerhub-login'){
+            steps{
+                sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
+                // sh 'res=$(echo $?)'
+                // sh 'echo $res'
             }
         }
         stage('Push to hub'){
