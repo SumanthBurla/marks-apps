@@ -8,10 +8,7 @@ pipeline {
     environment {
         IMAGE_NAME="sburla/marks-app"
         DOCKERHUB_CREDENTIALS=credentials('DockerID')
-        PROJECT_ID = 'future-silicon-342405'
-        CLUSTER_NAME = 'cluster-0'
-        LOCATION = 'us-central1-c'
-        CREDENTIALS_ID = 'k8s-jenkins'
+
     }
 
     stages {
@@ -104,3 +101,7 @@ def pushImage(){
         //         // sh 'kubectl apply -f deployment.yaml' 
         //     }
         // }
+        //         PROJECT_ID = 'future-silicon-342405'
+        // CLUSTER_NAME = 'cluster-0'
+        // LOCATION = 'us-central1-c'
+        // CREDENTIALS_ID = 'k8s-jenkins'
