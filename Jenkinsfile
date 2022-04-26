@@ -26,11 +26,11 @@ pipeline {
                 buildImage()
             }
         }
-        stage('Test run app'){
-            steps{
-                runApp()
-            }
-        }
+        // stage('Test run app'){
+        //     steps{
+        //         runApp()
+        //     }
+        // }
         stage('Dockerhub-login'){
             steps{
                 sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
@@ -41,6 +41,18 @@ pipeline {
         stage('Push to hub'){
             steps{
                pushImage()
+            }
+        }
+
+        stage('trigger runApp build'){
+            steps{
+                script{
+                    echo "---------${env.IMAGE_NAME}:v${env.BUILD_ID}.0--------"
+                    build job: 'runApp',
+                    parameters:[
+                        [ $class: 'StringParameterValue', name:'imageName_fromBuild', value:"${env.IMAGE_NAME}:v${env.BUILD_ID}.0"]
+                    ]
+                }
             }
         }
     } 
