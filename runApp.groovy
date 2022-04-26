@@ -10,15 +10,15 @@ pipeline {
     }
 
     stages {
-        // stage('Initialize'){ 
-        //     steps{
-        //         script{
-        //             def dockerHome = tool 'myDocker'
-        //             env.PATH = "${dockerHome}/bin:${env.PATH}"
-        //             echo "Running ${env.BUILD_ID} job on ${env.JENKINS_URL}"
-        //         }
-        //     }
-        // }
+        stage('Initialize'){
+            steps{
+                script{
+                    def dockerHome = tool 'myDocker'
+                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+                    echo "Running ${env.BUILD_ID} job on ${env.JENKINS_URL}"
+                }
+            }
+        }
         stage('Pull image from Hub'){
             steps{
                 echo "${params.imageName_fromBuild}"
@@ -31,20 +31,6 @@ pipeline {
             }
         }
     } 
-    post {
-        always {
-            echo 'displays always --- this is always block from post-build section'
-        }
-        success {
-            // deleteDir()
-            echo '----- Job Succeeded -----'
-            echo "app running on http://localhost:8083"
-        } 
-        failure {
-            // deleteDir()
-            echo 'displays when failure --- this is failure block from post-build section'
-        }
-    }
 }
 
 def runApp(){

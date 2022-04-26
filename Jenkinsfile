@@ -26,11 +26,9 @@ pipeline {
                 buildImage()
             }
         }
-        // stage('Test run app'){
-        //     steps{
-        //         runApp()
-        //     }
-        // }
+        
+        // Test app is downstreamed...
+
         stage('Dockerhub-login'){
             steps{
                 sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
