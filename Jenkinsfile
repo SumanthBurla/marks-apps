@@ -40,15 +40,15 @@ pipeline {
         }
         stage('Push to hub'){
             steps{
-               pushImage()
+                pushImage()
+                echo "---------${env.IMAGE_NAME}:v${env.BUILD_ID}.0--------"
             }
         }
 
         stage('trigger runApp build'){
             steps{
                 script{
-                    echo "---------${env.IMAGE_NAME}:v${env.BUILD_ID}.0--------"
-                    build job: 'runApp',
+                    build job: 'runApp.groovy',
                     parameters:[
                         [ $class: 'StringParameterValue', name:'imageName_fromBuild', value:"${env.IMAGE_NAME}:v${env.BUILD_ID}.0"]
                     ]
