@@ -48,7 +48,7 @@ pipeline {
         stage('trigger runApp build'){
             steps{
                 script{
-                    build job: 'runApp.groovy',
+                    build job: 'runApp',
                     parameters:[
                         [ $class: 'StringParameterValue', name:'imageName_fromBuild', value:"${env.IMAGE_NAME}:v${env.BUILD_ID}.0"]
                     ]
