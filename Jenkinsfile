@@ -74,7 +74,7 @@ pipeline {
         success {
             // deleteDir()
             echo '----- Job Succeeded -----'
-            echo "app running on http://localhost:8082"
+            echo "app running on http://localhost:8083"
             echo "https://hub.docker.com/repository/docker/${IMAGE_NAME}"
         } 
         failure {
