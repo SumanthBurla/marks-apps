@@ -28,11 +28,6 @@ pipeline {
             steps{
                 buildImage()
         }}
-        // stage('Test-Flask-app'){
-        //     steps{
-        //         runApp()
-        //     }
-        // }
         stage('Dockerhub-login'){
             steps{
                 sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
@@ -40,31 +35,16 @@ pipeline {
                 // sh 'echo $res'
             }
         }
-        stage('Push to hub'){
-            steps{
-               pushImage()
-            }
-        }
         stage('Test run app'){
             steps{
                 runApp()
             }
         }
-        // stage('Deploy to GKE') {
-        //     steps{
-        //         sh "sed -i 's/hello:latest/marks-app:v${env.BUILD_ID}.0/g' deployment.yaml"
-        //         sh('cat deployment.yaml')
-        //         // step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
-        //         //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
-        //         //     caCertificate: '<ca-certificate>',
-        //         //     serverUrl: '<api-server-address>',
-        //         //     contextName: '<context-name>',
-        //         //     clusterName: env.CLUSTER_NAME,
-        //         //     namespace: 'default'
-        //         //     ]) {
-        //         // sh 'kubectl apply -f deployment.yaml' 
-        //     }
-        // }
+        stage('Push to hub'){
+            steps{
+               pushImage()
+            }
+        }
     } 
     post {
         always {
@@ -97,3 +77,30 @@ def pushImage(){
     sh('docker push $IMAGE_NAME:v$BUILD_ID.0')
     echo "----- ${IMAGE_NAME} pushed -----"
 }
+
+
+
+
+
+
+
+
+
+
+
+
+        // stage('Deploy to GKE') {
+        //     steps{
+        //         sh "sed -i 's/hello:latest/marks-app:v${env.BUILD_ID}.0/g' deployment.yaml"
+        //         sh('cat deployment.yaml')
+        //         // step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+        //         //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
+        //         //     caCertificate: '<ca-certificate>',
+        //         //     serverUrl: '<api-server-address>',
+        //         //     contextName: '<context-name>',
+        //         //     clusterName: env.CLUSTER_NAME,
+        //         //     namespace: 'default'
+        //         //     ]) {
+        //         // sh 'kubectl apply -f deployment.yaml' 
+        //     }
+        // }
