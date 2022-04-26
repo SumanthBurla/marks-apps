@@ -45,21 +45,26 @@ pipeline {
                pushImage()
             }
         }
-        stage('Deploy to GKE') {
+        stage('Test run app'){
             steps{
-                sh "sed -i 's/hello:latest/marks-app:v${env.BUILD_ID}.0/g' deployment.yaml"
-                sh('cat deployment.yaml')
-                // step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
-                //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
-                //     caCertificate: '<ca-certificate>',
-                //     serverUrl: '<api-server-address>',
-                //     contextName: '<context-name>',
-                //     clusterName: env.CLUSTER_NAME,
-                //     namespace: 'default'
-                //     ]) {
-                // sh 'kubectl apply -f deployment.yaml' 
+                runApp()
             }
         }
+        // stage('Deploy to GKE') {
+        //     steps{
+        //         sh "sed -i 's/hello:latest/marks-app:v${env.BUILD_ID}.0/g' deployment.yaml"
+        //         sh('cat deployment.yaml')
+        //         // step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+        //         //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
+        //         //     caCertificate: '<ca-certificate>',
+        //         //     serverUrl: '<api-server-address>',
+        //         //     contextName: '<context-name>',
+        //         //     clusterName: env.CLUSTER_NAME,
+        //         //     namespace: 'default'
+        //         //     ]) {
+        //         // sh 'kubectl apply -f deployment.yaml' 
+        //     }
+        // }
     } 
     post {
         always {
@@ -85,7 +90,7 @@ def buildImage(){
     sh('docker images')
 }
 def runApp(){
-    sh('docker run -d -p 8082:5000 $IMAGE_NAME:v$BUILD_ID.0')
+    sh('docker run -d -p 8083:5000 $IMAGE_NAME:v$BUILD_ID.0')
 }
 
 def pushImage(){
