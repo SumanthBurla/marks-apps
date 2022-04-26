@@ -57,7 +57,7 @@ pipeline {
                 //     clusterName: env.CLUSTER_NAME,
                 //     namespace: 'default'
                 //     ]) {
-                // sh 'kubectl apply -f deployment.yaml'
+                // sh 'kubectl apply -f deployment.yaml' 
             }
         }
     } 
