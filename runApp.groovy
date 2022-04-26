@@ -48,7 +48,7 @@ pipeline {
 }
 
 def runApp(){
-    sh('docker run -d -p 8083:5000 ${params.imageName_fromBuild}')
+    sh("docker run -d -p 8083:5000 ${params.imageName_fromBuild}")
 }
 
 
