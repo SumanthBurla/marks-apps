@@ -1,43 +1,96 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello
+  name: marks-app-deploy
   labels:
-    app: hello
+    app: marks-app
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: hello
+      app: marks-app
       
   template:
     metadata:
       labels:
-        app: hello
-        tier: hello
+        app: marks-app
     spec:
       containers:
-        - name: hello
+        - name: marks-app
           image: sburla/hello:latest
           imagePullPolicy: Always
           ports:
           - containerPort: 5000
             name: hello
 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: marks-app-svc
+  labels:
+    app: marks-app
+spec:
+  ports:
+    - port: 8080
+      targetPort: 5000
+  selector:
+    app: marks-app
+  type: LoadBalancer
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marks-app-deploy
+  labels:
+    app: marks-app
+spec:
+  revisionHistoryLimit: 5 #10
+  replicas: 2
+  progressDeadlineSeconds: 360 #600
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: marks-app
+
+  template:
+    metadata:
+      labels:
+        app: marks-app
+    spec:
+      restartPolicy: OnFailurex
+      containers:
+        - name: marks-app
+          image: sburla/marks-app:v22.0
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 5000
+            name: marks-app-port
+        - name: nginx
+          image: nginx:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 80
+            name: nginx-port
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello
+  name: marks-app-svc
   labels:
-    app: hello
+    app: marks-app
 spec:
   ports:
-    - port: 5000
+    - port: 8083
       targetPort: 5000
+      name: marks-app-port
+    - port: 8084
+      targetPort: 80
+      name: nginx-port
   selector:
-    app: hello
-    tier: hello
+    app: marks-app
   type: LoadBalancer
