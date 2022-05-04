@@ -56,7 +56,7 @@ pipeline {
     } 
     post {
         always {
-            sh('docker logout')
+            // sh('docker logout')
             echo 'displays always --- this is always block from post-build section'
         }
         success {
