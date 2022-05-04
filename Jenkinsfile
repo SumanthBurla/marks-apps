@@ -39,7 +39,7 @@ pipeline {
         stage('Push to hub'){
             steps{
                 pushImage()
-                echo "---------${env.IMAGE_NAME}:v${env.BUILD_ID}.2.0--------"
+                echo "---------${env.IMAGE_NAME}:v${env.BUILD_ID}.0--------"
             }
         }
 
@@ -48,7 +48,7 @@ pipeline {
                 script{
                     build job: 'runApp',
                     parameters:[
-                        [ $class: 'StringParameterValue', name:'imageName_fromBuild', value:"${env.IMAGE_NAME}:v${env.BUILD_ID}.2.0"]
+                        [ $class: 'StringParameterValue', name:'imageName_fromBuild', value:"${env.IMAGE_NAME}:v${env.BUILD_ID}.0"]
                     ]
                 }
             }
@@ -73,16 +73,16 @@ pipeline {
 }
 
 def buildImage(){
-    sh('docker build -t $IMAGE_NAME:v$BUILD_ID.2.0 .')
+    sh('docker build -t $IMAGE_NAME:v$BUILD_ID.0 .')
     echo "Build complete..."
     sh('docker images')
 }
 def runApp(){
-    sh('docker run -d -p 8083:5000 $IMAGE_NAME:v$BUILD_ID.2.0')
+    sh('docker run -d -p 8083:5000 $IMAGE_NAME:v$BUILD_ID.0')
 }
 
 def pushImage(){
-    sh('docker push $IMAGE_NAME:v$BUILD_ID.2.0')
+    sh('docker push $IMAGE_NAME:v$BUILD_ID.0')
     echo "----- ${IMAGE_NAME} pushed -----"
 }
 
