@@ -43,16 +43,16 @@ pipeline {
             }
         }
 
-        stage('trigger runApp build'){
-            steps{
-                script{
-                    build job: 'runApp',
-                    parameters:[
-                        [ $class: 'StringParameterValue', name:'imageName_fromBuild', value:"${env.IMAGE_NAME}:v${env.BUILD_ID}.0"]
-                    ]
-                }
-            }
-        }
+        // stage('trigger runApp build'){
+        //     steps{
+        //         script{
+        //             build job: 'runApp',
+        //             parameters:[
+        //                 [ $class: 'StringParameterValue', name:'imageName_fromBuild', value:"${env.IMAGE_NAME}:v${env.BUILD_ID}.0"]
+        //             ]
+        //         }
+        //     }
+        // }
     } 
     post {
         always {
