@@ -7,8 +7,8 @@ pipeline {
     
     environment {
         PROJECT_ID = 'future-silicon-342405'
-        CLUSTER_NAME = 'cluster-0'
-        LOCATION = 'us-central1-c'
+        CLUSTER_NAME = 'demo-cluster'
+        LOCATION = 'us-central1-a'
         CREDENTIALS_ID = 'k8s-jenkins'
     }
 
@@ -17,7 +17,7 @@ pipeline {
             steps{
                 sh "sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml"
                 sh('cat deployment.yaml')
-                // step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                 //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
                 //     caCertificate: '<ca-certificate>',
                 //     serverUrl: '<api-server-address>',
