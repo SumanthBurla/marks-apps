@@ -26,13 +26,13 @@ pipeline {
                     // sh('kubectl get pods')
                 }
             }
-            stage{
-            agent {
-                docker { image 'gcr.io/cloud-builders/kubectl' }
-            }
-            steps {
-                sh 'kubectl version'
-            }
+            stage('kubectl'){
+                agent {
+                    docker { image 'gcr.io/cloud-builders/kubectl' }
+                }
+                steps {
+                    sh 'kubectl version'
+                }
             }
         // stage('Deploy to GKE') {
         //     steps{
