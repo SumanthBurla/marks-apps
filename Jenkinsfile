@@ -21,6 +21,7 @@ pipeline {
                     sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
                     cat deployment.yaml
                     which kubectl
+                    gcloud container clusters get-credentials demo-cluster --zone us-central1-a --project future-silicon-342405
                     ls -a
                     cat .kube/config
                     '''
