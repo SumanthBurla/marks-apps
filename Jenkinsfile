@@ -17,12 +17,8 @@ pipeline {
             stage('List pods') {
                 steps{
                 withKubeConfig([credentialsId: env.CREDENTIALS_ID, serverUrl: 'https://35.192.108.149']) {
-                    sh '''
-                    
-                    curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.2/bin/OS_DISTRIBUTION/amd64/kubectl
-                    chmod +x ./kubectl
-                    ./kubectl 
-                    
+                    sh '''                   
+                    kubectl 
                     '''
                 }
                 }
@@ -33,7 +29,7 @@ pipeline {
                     sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
                     cat deployment.yaml
                     echo $PATH
-                    ls /usr/local/bin
+                    ls /usr/bin
                 '''
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                 //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
