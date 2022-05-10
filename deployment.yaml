@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: marks-app-deploy
-  namespace: deploy
   labels:
     app: marks-app
 spec:
