@@ -17,9 +17,9 @@ pipeline {
             stage('List pods') {
                 steps{
                 withKubeConfig([credentialsId: env.CREDENTIALS_ID, serverUrl: 'https://35.192.108.149']) {
-                    sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
+                    sh 'curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"'  
                     sh 'chmod u+x ./kubectl'  
-                    sh 'kubectl'
+                    sh './kubectl'
                 }
                 }
             }
