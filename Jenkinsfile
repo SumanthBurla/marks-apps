@@ -21,13 +21,18 @@ pipeline {
                     sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
                     cat deployment.yaml
                     which kubectl
-                    gcloud container clusters get-credentials demo-cluster --zone us-central1-a --project future-silicon-342405
-                    ls -a
-                    cat .kube/config
                     '''
                     step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                     // sh('kubectl get pods')
                 }
+            }
+            stage{
+            agent {
+                docker { image 'gcr.io/cloud-builders/kubectl' }
+            }
+            steps {
+                sh 'kubectl version'
+            }
             }
         // stage('Deploy to GKE') {
         //     steps{
