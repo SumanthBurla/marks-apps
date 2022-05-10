@@ -15,10 +15,12 @@ pipeline {
     stages {
         stage('Deploy to GKE') {
             steps{
-                sh "sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml"
-                sh('cat deployment.yaml')
-                sh('echo $env')
-                sh('echo $PATH')
+                sh '''
+                    sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
+                    cat deployment.yaml
+                    echo $PATH
+                    kubectl 
+                '''
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                 //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
                 //     caCertificate: '<ca-certificate>',
