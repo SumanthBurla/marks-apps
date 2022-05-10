@@ -22,7 +22,7 @@ pipeline {
                     sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
                     cat deployment.yaml
                     which kubectl
-                    kubectl get pods 
+                    kubectl get pods -n deploy
                     '''
                 }
                 }
