@@ -10,7 +10,7 @@ pipeline {
         CLUSTER_NAME = 'demo-cluster'
         LOCATION = 'us-central1-a'
         CREDENTIALS_ID = 'future-silicon-342405'
-        K8S_CONFIG= 'kube_config'
+        // K8S_CONFIG= 'kube_config'
     }
 
     stages {
