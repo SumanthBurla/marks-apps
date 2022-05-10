@@ -16,11 +16,9 @@ pipeline {
     stages {
             stage('List pods') {
                 steps{
-                    sh '''                   
-                    kubectl
+                    sh '''
                     sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
                     cat deployment.yaml
-                    which kubectl
                     '''
                     step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                     // sh('kubectl get pods')
@@ -28,6 +26,7 @@ pipeline {
             }
         // stage('Deploy to GKE') {
         //     steps{
+                    //which kubectl
         //         sh ''''
                 // withKubeConfig([credentialsId: env.K8S_CONFIG, serverUrl: 'https://35.192.108.149]) {
                 //     sh '''                   
