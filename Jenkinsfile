@@ -19,7 +19,7 @@ pipeline {
                 withKubeConfig([credentialsId: env.CREDENTIALS_ID, serverUrl: 'https://35.192.108.149']) {
                     sh '''
                     
-                    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/OS_DISTRIBUTION/amd64/kubectl
+                    curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.2/bin/OS_DISTRIBUTION/amd64/kubectl
                     chmod +x ./kubectl
                     ./kubectl 
                     
