@@ -2,13 +2,7 @@
 
 pipeline {
     agent {
-        node { 
-            
-            label 'default' 
-            withEnv(['JENKINS_HOME=/usr/local/bin/kubectl']) {
-                sh '$JENKINS_HOME/bin/start'
-            }
-            }
+        node { label 'default' }
     }
     
     environment {
@@ -25,7 +19,7 @@ pipeline {
                     sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
                     cat deployment.yaml
                     echo $PATH
-                    kubectl 
+                    kubectl
                 '''
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                 //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
