@@ -10,10 +10,18 @@ pipeline {
         CLUSTER_NAME = 'demo-cluster'
         LOCATION = 'us-central1-a'
         CREDENTIALS_ID = 'future-silicon-342405'
+        K8S_CONFIG= 'kubernetes-config'
     }
 
     stages {
         stage('Deploy to GKE') {
+            stage('List pods') {
+                withKubeConfig([credentialsId: env.K8S_CONFIG]) {
+                    sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
+                    sh 'chmod u+x ./kubectl'  
+                    sh './kubectl get pods'
+                }
+            }
             steps{
                 sh '''
                     sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
