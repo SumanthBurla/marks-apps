@@ -14,18 +14,27 @@ pipeline {
     }
 
     stages {
-            stage('List pods') {
-                steps{
-                    sh '''                   
-                    kubectl
-                    sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
-                    cat deployment.yaml
-                    which kubectl
-                    '''
-                    step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
-                    // sh('kubectl get pods')
+        stage('Initialize'){
+            steps{
+                script{
+                    def dockerHome = tool 'myDocker'
+                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+                    echo "Running ${env.BUILD_ID} job on ${env.JENKINS_URL}"
                 }
             }
+        } 
+            // stage('List pods') {
+            //     steps{
+            //         sh '''                   
+            //         kubectl
+            //         sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
+            //         cat deployment.yaml
+            //         which kubectl
+            //         '''
+            //         step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+            //         // sh('kubectl get pods')
+            //     }
+            // }
             stage('kubectl'){
                 agent {
                     docker { image 'gcr.io/cloud-builders/kubectl' }
