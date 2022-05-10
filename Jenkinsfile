@@ -19,6 +19,7 @@ pipeline {
                     sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
                     cat deployment.yaml
                     echo $PATH
+                    ls /usr/local/bin
                     /usr/local/bin/kubectl
                     kubectl
                 '''
