@@ -34,8 +34,7 @@ pipeline {
                     cat deployment.yaml
                     echo $PATH
                     ls /usr/local/bin
-                    /usr/local/bin/kubectl
-                    kubectl
+                    kubectl version
                 '''
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                 //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
