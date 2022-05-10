@@ -2,7 +2,13 @@
 
 pipeline {
     agent {
-        node { label 'default' }
+        node { 
+            
+            label 'default' 
+            withEnv(['JENKINS_HOME=/usr/local/bin/kubectl']) {
+                sh '$JENKINS_HOME/bin/start'
+            }
+            }
     }
     
     environment {
