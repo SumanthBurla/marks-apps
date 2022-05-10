@@ -14,7 +14,6 @@ pipeline {
     }
 
     stages {
-        stage('Deploy to GKE') {
             stage('List pods') {
                 withKubeConfig([credentialsId: env.K8S_CONFIG]) {
                     sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
@@ -22,6 +21,7 @@ pipeline {
                     sh './kubectl get pods'
                 }
             }
+        stage('Deploy to GKE') {
             steps{
                 sh '''
                     sed -i 's/hello:latest/marks-app:v13.0/g' deployment.yaml
