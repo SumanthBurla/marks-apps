@@ -9,7 +9,7 @@ pipeline {
         PROJECT_ID = 'future-silicon-342405'
         CLUSTER_NAME = 'demo-cluster'
         LOCATION = 'us-central1-a'
-        CREDENTIALS_ID = 'k8s-jenkins'
+        CREDENTIALS_ID = 'future-silicon-342405'
     }
 
     stages {
