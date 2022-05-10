@@ -22,6 +22,7 @@ pipeline {
                     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/OS_DISTRIBUTION/amd64/kubectl
                     chmod +x ./kubectl
                     mv ./kubectl /usr/local/bin/kubectl
+                    kubectl version
                     
                     '''
                 }
@@ -34,7 +35,6 @@ pipeline {
                     cat deployment.yaml
                     echo $PATH
                     ls /usr/local/bin
-                    kubectl version
                 '''
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
                 //     withKubeConfig([credentialsId: env.CREDENTIALS_ID,
