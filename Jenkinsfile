@@ -10,12 +10,12 @@ pipeline{
         }
         stage('Build'){
             steps{
-                sh 'docker build -t sam:v11.1 .'
+                sh 'sudo docker build -t sam:v11.1 .'
             }
         }
         stage('run'){
             steps{
-                sh 'docker run -d -p 8088:5000 sam:v11.1'
+                sh 'sudo docker run -d -p 8088:5000 sam:v11.1'
             }
         }
     }
