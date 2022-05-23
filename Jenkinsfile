@@ -10,6 +10,9 @@ pipeline{
         }
         stage('Build'){
             steps{
+                sh 'pwd'
+                sh 'whoami'
+            
                 sh 'docker build -t sam:v11.1 .'
             }
         }
