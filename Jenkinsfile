@@ -7,18 +7,32 @@ pipeline{
             steps{
                 git branch: 'temp', url: 'https://github.com/SumanthBurla/marks-apps.git'
             }
+            post{
+                 success{
+                    echo "changing to temp branch"
+                    echo "building image noew...."
+                }
+            }
         }
         stage('Build'){
             steps{
-                sh 'pwd'
-                sh 'whoami'
-            
                 sh 'docker build -t sam:v11.1 .'
             }
+            post{
+                success{
+                    echo "images build sucessfully"
+                    echo "showing images...."
+                }
+            }
         }
-        stage('run'){
+        stage('images'){
             steps{
-                sh 'docker run -d -p 8088:5000 sam:v11.1'
+                sh 'docker images'
+            }
+            post{
+                 success{
+                    echo "showed images...."
+                }
             }
         }
     }
