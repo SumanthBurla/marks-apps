@@ -1,11 +1,17 @@
 #!/usr/bin/env groovy
 
 pipeline{
-    agent any
+    agent {
+        label 'ubuntu'
+    }
+    tools{
+     'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'myDocker'
+    }
     stages{
         stage('clone repo'){
             steps{
                 git branch: 'temp', url: 'https://github.com/SumanthBurla/marks-apps.git'
+                sh "docker version" 
             }
             post{
                  success{
