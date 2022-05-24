@@ -4,9 +4,6 @@ pipeline{
     agent {
         label 'ubuntu'
     }
-    tools{
-     'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'myDocker'
-    }
     stages{
         stage('clone repo'){
             steps{
