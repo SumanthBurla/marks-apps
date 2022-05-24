@@ -8,7 +8,6 @@ pipeline{
         stage('clone repo'){
             steps{
                 git branch: 'temp', url: 'https://github.com/SumanthBurla/marks-apps.git'
-                sh "docker version" 
                 sh 'whoami'
                 sh 'hostname'
             }
